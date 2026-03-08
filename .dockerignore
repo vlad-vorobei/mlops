@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.env
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# ML/Data
+.ipynb_checkpoints/
+data/
+*.log
