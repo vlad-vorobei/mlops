@@ -1,0 +1,2 @@
+cluster_name = "mlops-test-cluster"
+region       = "us-east-1"
