@@ -1,17 +1,20 @@
 .venv
 .idea
 
-
 .terraform/
 *.tfstate
 *.tfstate.*
-crash.log
-crash.*.log
+.terraform.tfstate.lock.info
+*.tfplan
 *.tfvars
 *.tfvars.json
+crash.log
+crash.*.log
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 .terraformrc
 terraform.rc
+.terraform.lock.hcl
+!*.tfvars.example
