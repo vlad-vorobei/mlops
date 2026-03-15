@@ -16,14 +16,12 @@ terraform/
 │   ├── main.tf
 │   ├── variables.tf
 │   ├── outputs.tf
-│   ├── terraform.tf
-│   └── backend.tf
+│   └── terraform.tf
 ├── eks/
 │   ├── main.tf
 │   ├── variables.tf
 │   ├── outputs.tf
-│   ├── terraform.tf
-│   └── backend.tf
+│   └── terraform.tf
 ├── argocd/
 │   ├── main.tf
 │   ├── variables.tf
@@ -146,25 +144,21 @@ terraform destroy -var-file=terraform.tfvars
 - **cpu_nodes** — t3.small, label `workload = cpu-tasks`, desired 4, max 5
 - **gpu_nodes** — t3.small, label `workload = gpu-tasks`, desired 1
 
-## terraform_remote_state
-
-Модуль EKS може брати VPC з `data.terraform_remote_state` (key `root/terraform.tfstate`). При виклику з кореневого `main.tf` VPC передається з `module.vpc`; при окремому запуску з `eks/` задайте `use_remote_state = true`.
-
 ## Інфраструктура (EKS, ArgoCD, MLflow)
 
 ### Скріншоти звіту
 
 **Ноди кластера (EKS):**
-![Nodes](../pictures/nodes.png)
+![Nodes](../pictures/ls-7/nodes.png)
 
 **Поди (infra-tools та application):**
-![Pods](../pictures/pods.png)
+![Pods](../pictures/ls-7/pods.png)
 
 **ArgoCD Application (mlflow):**
-![Application](../pictures/application.png)
+![Application](../pictures/ls-7/application.png)
 
 **ArgoCD UI:**
-![Argo CD](../pictures/argo.png)
+![Argo CD](../pictures/ls-7/argo.png)
 
 **MLflow UI:**
-![MLflow](../pictures/mlflow.png)
+![MLflow](../pictures/ls-7/mlflow.png)
