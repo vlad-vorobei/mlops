@@ -1,17 +1,6 @@
-data "terraform_remote_state" "vpc" {
-  count = var.use_remote_state ? 1 : 0
-
-  backend = "s3"
-  config = {
-    bucket = "amzn-mlops-vl-nomad-tf-storage"
-    key    = "root/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
-
 locals {
-  vpc_id     = var.use_remote_state ? data.terraform_remote_state.vpc[0].outputs.vpc_id : var.vpc_id
-  subnet_ids = var.use_remote_state ? data.terraform_remote_state.vpc[0].outputs.private_subnets : var.subnet_ids
+  vpc_id     = var.vpc_id
+  subnet_ids = var.subnet_ids
 }
 
 module "eks" {
