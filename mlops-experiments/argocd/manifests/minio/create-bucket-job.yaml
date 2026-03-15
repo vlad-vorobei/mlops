@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-create-bucket
+  namespace: application
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: mc
+          image: minio/mc:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              until mc alias set myminio http://minio.application.svc.cluster.local:9000 minio minio123; do echo wait minio...; sleep 2; done
+              mc mb myminio/mlflow-artifacts --ignore-existing

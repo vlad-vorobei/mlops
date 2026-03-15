@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: infra-tools
+  labels:
+    app: monitoring
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 45.5.0
+    helm:
+      values: |
+        namespaceOverride: monitoring
+
+        prometheus:
+          service:
+            type: ClusterIP
+          prometheusSpec:
+            replicas: 1
+            retention: 10d
+            serviceMonitorSelectorNilUsesHelmValues: false
+            serviceMonitorSelector:
+              matchLabels:
+                release: monitoring
+            additionalScrapeConfigs:
+              - job_name: pushgateway
+                honor_labels: true
+                static_configs:
+                  - targets: ['pushgateway.monitoring.svc.cluster.local:9091']
+
+        grafana:
+          enabled: true
+          service:
+            type: ClusterIP
+          adminPassword: admin
+          defaultDashboardsEnabled: true
+
+        alertmanager:
+          enabled: true
+          service:
+            type: ClusterIP
+          alertmanagerSpec:
+            replicas: 1
+
+        pushgateway:
+          enabled: false
+
+        prometheusOperator:
+          admissionWebhooks:
+            enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

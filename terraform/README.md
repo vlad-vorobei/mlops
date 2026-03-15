@@ -149,16 +149,16 @@ terraform destroy -var-file=terraform.tfvars
 ### Скріншоти звіту
 
 **Ноди кластера (EKS):**
-![Nodes](../pictures/nodes.png)
+![Nodes](../pictures/ls-7/nodes.png)
 
 **Поди (infra-tools та application):**
-![Pods](../pictures/pods.png)
+![Pods](../pictures/ls-7/pods.png)
 
 **ArgoCD Application (mlflow):**
-![Application](../pictures/application.png)
+![Application](../pictures/ls-7/application.png)
 
 **ArgoCD UI:**
-![Argo CD](../pictures/argo.png)
+![Argo CD](../pictures/ls-7/argo.png)
 
 **MLflow UI:**
-![MLflow](../pictures/mlflow.png)
+![MLflow](../pictures/ls-7/mlflow.png)
