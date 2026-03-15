@@ -1,0 +1,68 @@
+dex:
+  enabled: false
+applicationSet:
+  enabled: false
+notifications:
+  enabled: false
+
+server:
+  service:
+    type: ClusterIP
+  extraArgs:
+    - --insecure
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  metrics:
+    enabled: false
+
+configs:
+  params:
+    server.insecure: true
+  rbac:
+    policy.csv: |
+      p, role:org-admin, applications, *, */*, allow
+      p, role:org-admin, clusters, *, *, allow
+      p, role:org-admin, repositories, *, *, allow
+      p, role:org-admin, projects, *, *, allow
+  cm:
+    timeout.reconciliation: 180s
+    application.health.check.timeout: 30
+
+controller:
+  metrics:
+    enabled: false
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  env:
+    - name: ARGOCD_RECONCILIATION_TIMEOUT
+      value: "180"
+
+repoServer:
+  metrics:
+    enabled: false
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+redis:
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "20m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
