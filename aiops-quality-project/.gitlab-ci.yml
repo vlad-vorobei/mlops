@@ -6,7 +6,7 @@ stages:
 
 variables:
   IMAGE_NAME: "$CI_REGISTRY_IMAGE/aiops-quality-service"
-  HELM_VALUES_FILE: "helm/values.yaml"
+  HELM_VALUES_FILE: "aiops-quality-project/helm/values.yaml"
 
 retrain-model:
   stage: retrain
@@ -20,10 +20,10 @@ retrain-model:
   before_script:
     - pip install --no-cache-dir scikit-learn
   script:
-    - python model/train.py
+    - MODEL_OUTPUT_PATH=aiops-quality-project/artifacts/model.pkl python aiops-quality-project/model/train.py
   artifacts:
     paths:
-      - artifacts/model.pkl
+      - aiops-quality-project/artifacts/model.pkl
     expire_in: 1 week
 
 build-image:
@@ -39,7 +39,7 @@ build-image:
   script:
     - export IMAGE_TAG="${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}"
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+    - docker build -f aiops-quality-project/Dockerfile -t "$IMAGE_NAME:$IMAGE_TAG" aiops-quality-project
     - docker push "$IMAGE_NAME:$IMAGE_TAG"
     - echo "IMAGE_TAG=$IMAGE_TAG" >> build.env
   artifacts:
