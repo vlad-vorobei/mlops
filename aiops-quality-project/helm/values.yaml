@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: registry.gitlab.com/vorobei/mlops-final-project/aiops-quality-service
-  tag: latest
+  tag: manual-202603221905
   pullPolicy: IfNotPresent
 
 service:
@@ -24,7 +24,7 @@ env:
   DRIFT_WEBHOOK_URL: ""
 
 metrics:
-  enabled: true
+  enabled: false
   path: /metrics
   port: 8000
 
