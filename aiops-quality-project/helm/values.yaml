@@ -19,7 +19,7 @@ resources:
 
 env:
   MODEL_PATH: /models/model.pkl
-  DRIFT_THRESHOLD: "0.7"
+  DRIFT_THRESHOLD: "0.1"
   LOG_LEVEL: INFO
   DRIFT_WEBHOOK_URL: ""
 
