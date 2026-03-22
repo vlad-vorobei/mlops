@@ -65,4 +65,4 @@ update-helm-chart:
     - export GIT_COMMITTER_NAME="ci-bot"
     - export GIT_COMMITTER_EMAIL="ci-bot@example.com"
     - git commit -m "ci-update helm image tag to $IMAGE_TAG" || echo "No changes to commit"
-    - git push origin "$CI_COMMIT_BRANCH"
+    - git push origin "HEAD:$CI_COMMIT_BRANCH"
