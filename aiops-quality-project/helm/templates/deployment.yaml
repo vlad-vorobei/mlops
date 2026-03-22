@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aiops-quality-service.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "aiops-quality-service.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aiops-quality-service.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "aiops-quality-service.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        {{- if .Values.loki.enabled }}
+        {{- toYaml .Values.loki.annotations | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+          env:
+            - name: MODEL_PATH
+              value: "{{ .Values.env.MODEL_PATH }}"
+            - name: DRIFT_THRESHOLD
+              value: "{{ .Values.env.DRIFT_THRESHOLD }}"
+            - name: LOG_LEVEL
+              value: "{{ .Values.env.LOG_LEVEL }}"
+            - name: DRIFT_WEBHOOK_URL
+              value: "{{ .Values.env.DRIFT_WEBHOOK_URL }}"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: model-volume
+              mountPath: {{ .Values.model.mountPath }}
+      volumes:
+        - name: model-volume
+          {{- if .Values.model.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.model.existingClaim }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

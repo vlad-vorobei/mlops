@@ -1,0 +1,15 @@
+- job_name: aiops-quality-service
+  honor_labels: true
+  metrics_path: /metrics
+  kubernetes_sd_configs:
+    - role: endpoints
+      namespaces:
+        names:
+          - aiops
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_service_name]
+      regex: .*-aiops-quality-service
+      action: keep
+    - source_labels: [__meta_kubernetes_endpoint_port_name]
+      regex: http
+      action: keep
